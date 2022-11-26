@@ -1,5 +1,5 @@
 import fetch from 'node-fetch';
-import { IAPIResponse, IRequiredProps } from './interfaces';
+import { IAPIResponse, IRequiredProps } from './interfaces.js';
 
 
 export class Model {
@@ -7,8 +7,8 @@ export class Model {
     private API_URL = "https://api.apilayer.com/exchangerates_data"
     
 
-    async startConverter(data: IRequiredProps): Promise<IAPIResponse> {
-        let response;
+    async startConverter(data: IRequiredProps): Promise<IAPIResponse | string> {
+        let response: IAPIResponse | string;
         try{
         
              const requestOptions = {
@@ -21,11 +21,11 @@ export class Model {
             };
         
            const res = await fetch(`${this.API_URL}/convert?to=${data.to}&from=${data.from}&amount=${data.amount}`, requestOptions)
-           response = await res.json();
+           response = await res.json() as IAPIResponse;
 
         }catch(err) {
             console.log(err);
-            response = err
+            response = err as string
         }
 
         return response
